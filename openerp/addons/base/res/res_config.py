@@ -549,8 +549,14 @@ class res_config_settings(osv.osv_memory, res_config_module_installation_mixin):
         config = self.browse(cr, uid, ids[0], context)
 
         # default values fields
+        # hack Algios: Comprobación si el campo no es tipo texto y es objeto
         for name, model, field in classified['default']:
-            ir_values.set_default(cr, SUPERUSER_ID, model, field, config[name])
+            if type(config[name]) != unicode:
+                newval = config[name].id
+            else:
+                newval = config[name]
+            ir_values.set_default(cr, SUPERUSER_ID, model, field, newval)
+        # Fin hack Algios
 
         # group fields: modify group / implied groups
         for name, groups, implied_group in classified['group']:
