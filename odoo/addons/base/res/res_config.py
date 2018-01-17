@@ -33,7 +33,7 @@ class ResConfigModuleInstallationMixin(object):
         result = None
         if to_install_modules:
             result = to_install_modules.button_immediate_install()
-        #FIXME: if result is not none, the corresponding todo will be skipped because it was just marked done
+        # FIXME: if result is not none, the corresponding todo will be skipped because it was just marked done
         if to_install_missing_names:
             return {
                 'type': 'ir.actions.client',
@@ -270,7 +270,7 @@ class ResConfigInstaller(models.TransientModel, ResConfigModuleInstallationMixin
         selectable = [name for name, field in self._fields.iteritems()
                       if field.type == 'boolean']
         return self.env['ir.module.module'].search([('name', 'in', selectable),
-                            ('state', 'in', ['to install', 'installed', 'to upgrade'])])
+                                                    ('state', 'in', ['to install', 'installed', 'to upgrade'])])
 
     def modules_to_install(self):
         """ selects all modules to install:
@@ -297,7 +297,7 @@ class ResConfigInstaller(models.TransientModel, ResConfigModuleInstallationMixin
 
         hooks_results = set()
         for module in base:
-            hook = getattr(self, '_if_%s'% module, None)
+            hook = getattr(self, '_if_%s' % module, None)
             if hook:
                 hooks_results.update(hook() or set())
 
@@ -328,7 +328,7 @@ class ResConfigInstaller(models.TransientModel, ResConfigModuleInstallationMixin
                 continue
             fields[name].update(
                 readonly=True,
-                help= ustr(fields[name].get('help', '')) +
+                help=ustr(fields[name].get('help', '')) +
                      _('\n\nThis addon is already installed on your system'))
         return fields
 
@@ -408,7 +408,7 @@ class ResConfigSettings(models.TransientModel, ResConfigModuleInstallationMixin)
             toolbar=toolbar, submenu=submenu)
 
         can_install_modules = self.env['ir.module.module'].check_access_rights(
-                                    'write', raise_exception=False)
+            'write', raise_exception=False)
 
         doc = etree.XML(ret_val['arch'])
 
@@ -423,7 +423,7 @@ class ResConfigSettings(models.TransientModel, ResConfigModuleInstallationMixin)
                     node.set("modifiers", json.dumps(modifiers))
                 if 'on_change' not in node.attrib:
                     node.set("on_change",
-                    "onchange_module(%s, '%s')" % (field, field))
+                             "onchange_module(%s, '%s')" % (field, field))
 
         ret_val['arch'] = etree.tostring(doc)
         return ret_val
@@ -433,7 +433,7 @@ class ResConfigSettings(models.TransientModel, ResConfigModuleInstallationMixin)
         ModuleSudo = self.env['ir.module.module'].sudo()
         modules = ModuleSudo.search(
             [('name', '=', module_name.replace("module_", '')),
-            ('state', 'in', ['to install', 'installed', 'to upgrade'])])
+             ('state', 'in', ['to install', 'installed', 'to upgrade'])])
 
         if modules and not field_value:
             deps = modules.sudo().downstream_dependencies()
