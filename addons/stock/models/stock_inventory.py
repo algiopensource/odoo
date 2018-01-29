@@ -310,7 +310,7 @@ class InventoryLine(models.Model):
         'product.product', 'Product',
         index=True, required=True)
     product_name = fields.Char(
-        'Product Name', related='product_id.name', store=True)
+        'Product Name', related='product_id.name', store=True, readonly=True)
     product_code = fields.Char(
         'Product Code', related='product_id.default_code', store=True)
     product_uom_id = fields.Many2one(
@@ -373,8 +373,14 @@ class InventoryLine(models.Model):
             self._compute_theoretical_qty()
             self.product_qty = self.theoretical_qty
 
+    @api.multi
+    def write(self, values):
+        values.pop('product_name', False)
+        res = super(InventoryLine, self).write(values)
+
     @api.model
     def create(self, values):
+        values.pop('product_name', False)
         if 'product_id' in values and 'product_uom_id' not in values:
             values['product_uom_id'] = self.env['product.product'].browse(values['product_id']).uom_id.id
         existings = self.search([
@@ -448,9 +454,9 @@ class InventoryLine(models.Model):
                 continue
             diff = line.theoretical_qty - line.product_qty
             if diff < 0:  # found more than expected
-                vals = self._get_move_values(abs(diff), line.product_id.property_stock_inventory.id, line.location_id.id)
+                vals = line._get_move_values(abs(diff), line.product_id.property_stock_inventory.id, line.location_id.id)
             else:
-                vals = self._get_move_values(abs(diff), line.location_id.id, line.product_id.property_stock_inventory.id)
+                vals = line._get_move_values(abs(diff), line.location_id.id, line.product_id.property_stock_inventory.id)
             move = moves.create(vals)
 
             if diff > 0:
