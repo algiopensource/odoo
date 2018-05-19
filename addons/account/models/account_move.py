@@ -56,7 +56,8 @@ class AccountMove(models.Model):
                     total_amount += amount
                     for partial_line in (line.matched_debit_ids + line.matched_credit_ids):
                         total_reconciled += partial_line.amount
-            if float_is_zero(total_amount, precision_rounding=move.currency_id.rounding):
+            precision_currency = move.currency_id or move.company_id.currency_id
+            if float_is_zero(total_amount, precision_rounding=precision_currency.rounding):
                 move.matched_percentage = 1.0
             else:
                 move.matched_percentage = total_reconciled / total_amount
@@ -220,7 +221,7 @@ class AccountMove(models.Model):
 
     # Do not forward port in >= saas-14
     def _reconcile_reversed_pair(self, move, reversed_move):
-        amls_to_reconcile = move.line_ids + reversed_move.line_ids
+        amls_to_reconcile = (move.line_ids + reversed_move.line_ids).filtered(lambda l: not l.reconciled)
         accounts_reconcilable = amls_to_reconcile.mapped('account_id').filtered(lambda a: a.reconcile)
         for account in accounts_reconcilable:
             amls_for_account = amls_to_reconcile.filtered(lambda l: l.account_id.id == account.id)
@@ -905,8 +906,6 @@ class AccountMoveLine(models.Model):
             raise UserError(_('Entries are not of the same account!'))
         if not all_accounts[0].reconcile:
             raise UserError(_('The account %s (%s) is not marked as reconciliable !') % (all_accounts[0].name, all_accounts[0].code))
-        if len(partners) > 1:
-            raise UserError(_('The partner has to be the same on all lines for receivable and payable accounts!'))
 
         #reconcile everything that can be
         remaining_moves = self.auto_reconcile_lines()
@@ -1062,6 +1061,12 @@ class AccountMoveLine(models.Model):
                     account_move_line.payment_id.write({'invoice_ids': [(3, invoice.id, None)]})
             rec_move_ids += account_move_line.matched_debit_ids
             rec_move_ids += account_move_line.matched_credit_ids
+        if self.env.context.get('invoice_id'):
+            current_invoice = self.env['account.invoice'].browse(self.env.context['invoice_id'])
+            aml_to_keep = current_invoice.move_id.line_ids | current_invoice.move_id.line_ids.mapped('full_reconcile_id.exchange_move_id.line_ids')
+            rec_move_ids = rec_move_ids.filtered(
+                lambda r: (r.debit_move_id + r.credit_move_id) & aml_to_keep
+            )
         return rec_move_ids.unlink()
 
     ####################################################
@@ -1235,7 +1240,7 @@ class AccountMoveLine(models.Model):
                 raise UserError(_('You cannot do this modification on a reconciled entry. You can just change some non legal fields or you must unreconcile first.\n%s.') % err_msg)
             if line.move_id.id not in move_ids:
                 move_ids.add(line.move_id.id)
-            self.env['account.move'].browse(list(move_ids))._check_lock_date()
+        self.env['account.move'].browse(list(move_ids))._check_lock_date()
         return True
 
     ####################################################
