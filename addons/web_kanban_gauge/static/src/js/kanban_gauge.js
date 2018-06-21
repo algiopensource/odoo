@@ -96,9 +96,9 @@ var GaugeWidget = AbstractField.extend({
 
         // bottom label
 
-        addText(0, 8, -(outerRadius+innerRadius)/2, 12);
-        addText(label, 8, 0, 12);
-        addText(utils.human_number(max_value, 1), 8, (outerRadius+innerRadius)/2, 12);
+        addText(0, 14, -(outerRadius+innerRadius)/2, 12);
+        addText(label, 14, 0, 12);
+        addText(utils.human_number(max_value, 1), 14, (outerRadius+innerRadius)/2, 12);
 
         // chart
 
