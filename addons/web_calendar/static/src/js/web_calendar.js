@@ -634,12 +634,18 @@ var CalendarView = View.extend({
                     the_title_avatar += '<span class="o_attendee_head" title="' + attendee_other.slice(0, -2) + '">+</span>';
                 }
             }
+
+            the_title_avatar += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/email.png"/>'
+            the_title_avatar += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/ring.png"/>'
+            the_title_avatar += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/reunion.png"/>'
+
         }
         
         if (!date_stop && date_delay) {
             var m_start = moment(date_start).add(date_delay,'hours');
             date_stop = m_start.toDate();
         }
+
         var r = {
             'start': moment(date_start).toString(),
             'end': moment(date_stop).toString(),
