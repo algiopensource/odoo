@@ -189,7 +189,7 @@ msgstr ""
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.report_mrporder
 msgid "<strong>Partner Ref:</strong><br/>"
-msgstr "<strong>Партньор реф.:</strong><br/>"
+msgstr "<strong>Справка за контрагент:</strong><br/>"
 
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.report_mrporder
@@ -549,7 +549,7 @@ msgstr "По продукт"
 #: code:addons/mrp/models/stock_warehouse.py:36
 #, python-format
 msgid "Can't find any generic Manufacture route."
-msgstr ""
+msgstr "Не се открива никакъв универсален маршрут 'Произведете'"
 
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.mrp_production_form_view
@@ -668,7 +668,7 @@ msgstr "Цвят"
 #. module: mrp
 #: model:ir.model,name:mrp.model_res_company
 msgid "Companies"
-msgstr "Предприятия"
+msgstr "Компании"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom_company_id
@@ -679,7 +679,7 @@ msgstr "Предприятия"
 #: model:ir.model.fields,field_description:mrp.field_mrp_workcenter_company_id
 #: model:ir.ui.view,arch_db:mrp.view_mrp_workcenter_search
 msgid "Company"
-msgstr "Фирма"
+msgstr "Компания"
 
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.mrp_bom_component_tree_view
@@ -1154,7 +1154,7 @@ msgstr "Висок"
 #: model:ir.model.fields,field_description:mrp.field_report_mrp_report_mrpbomstructure_id
 #: model:ir.model.fields,field_description:mrp.field_stock_move_lots_id
 msgid "ID"
-msgstr "ID"
+msgstr "ИН"
 
 #. module: mrp
 #: model:ir.model.fields,help:mrp.field_mrp_bom_product_id
@@ -1265,6 +1265,10 @@ msgid ""
 "materials.Set a location if you produce at a fixed location. This can be a "
 "partner location if you subcontract the manufacturing operations."
 msgstr ""
+"Дръжте мястото празно, ако производството Ви е разположено на терена, от "
+"който добивате суровините. Настройте локация, ако произвеждате на определено"
+" място. Това може да е местоположение на контрагент, в случай че възлагате "
+"подизпълнители за производствените операции."
 
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.view_mrp_bom_filter
@@ -1502,7 +1506,7 @@ msgstr "Производствен срок за доставка"
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_config_settings_manufacturing_lead
 msgid "Manufacturing Lead Time *"
-msgstr ""
+msgstr "Manufacturing Lead Time *"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_change_production_qty_mo_id
@@ -1552,7 +1556,7 @@ msgstr "Поръчки за производство в потвърдено с�
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_stock_warehouse_manu_type_id
 msgid "Manufacturing Picking Type"
-msgstr ""
+msgstr "Производствен пикинг вид"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom_ready_to_produce
@@ -1563,7 +1567,7 @@ msgstr ""
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.mrp_production_form_view
 msgid "Manufacturing Reference"
-msgstr ""
+msgstr "Производствена референция"
 
 #. module: mrp
 #: model:ir.actions.act_window,help:mrp.mrp_production_action
@@ -1588,7 +1592,7 @@ msgstr "Шаблон"
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_config_settings_module_mrp_mps
 msgid "Master Production Schedule"
-msgstr ""
+msgstr "Главен производствен график"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_message_message
@@ -1715,6 +1719,8 @@ msgstr ""
 msgid ""
 "No need for Master Production Schedule as products have short lead times"
 msgstr ""
+"Няма нужда от Главен производствен трафик, тъй като продуктите са с кратки "
+"срокове на лийдовете"
 
 #. module: mrp
 #: selection:mrp.config.settings,module_mrp_plm:0
@@ -2301,6 +2307,9 @@ msgid ""
 "Recursion error!  A product with a Bill of Material should not have itself "
 "in its BoM or child BoMs!"
 msgstr ""
+"Рекурсивна грешка!  Продукт с фактура за покупка на материали не би трябвало"
+" да съдържа в себе си фактура за покупка на материали или второстепенни "
+"фактури за покупка на материали!"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom_code
@@ -2308,7 +2317,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp.field_mrp_routing_code
 #: model:ir.model.fields,field_description:mrp.field_mrp_unbuild_name
 msgid "Reference"
-msgstr "Означение"
+msgstr "Референция"
 
 #. module: mrp
 #: sql_constraint:mrp.production:0
@@ -2771,7 +2780,7 @@ msgstr ""
 #. module: mrp
 #: model:ir.model,name:mrp.model_stock_picking_type
 msgid "The picking type determines the picking view"
-msgstr "Типът пикинг определя пикинг изгледа"
+msgstr "Видът пикинг определя пикинг изгледа"
 
 #. module: mrp
 #: sql_constraint:mrp.production:0
@@ -3080,7 +3089,7 @@ msgstr "Варианти"
 #. module: mrp
 #: selection:ir.attachment,priority:0
 msgid "Very High"
-msgstr ""
+msgstr "Много висок"
 
 #. module: mrp
 #: selection:mrp.production,priority:0
@@ -3130,6 +3139,11 @@ msgid ""
 " picking type. That allows to define procurement rules which trigger "
 "different manufacturing orders with different BoMs. "
 msgstr ""
+"Когато дадена доставка има маршрут ‘продукция’ с набор от пикинг видове, тя "
+"ще се опита да създаде поръчка за производството на този продукт, "
+"използвайки фактура за покупка на материали на същия вид пикинг. Това "
+"позволява да се определят правила за доставки, които задействат различни "
+"поръчки за производство с различни фактури за покупки на материали."
 
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.mrp_bom_form_view
