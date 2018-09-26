@@ -33,13 +33,13 @@ function get_fc_defaultOptions() {
 
     // adapt format for fullcalendar v1.
     // see http://fullcalendar.io/docs1/utilities/formatDate/
-    var conversions = [['YYYY', 'yyyy'], ['YY', 'y'], ['DDDD', 'dddd'], ['DD', 'dd']];
+    var conversions = [['YYYY', 'yyyy'], ['YY', 'yy'], ['DDDD', 'dddd'], ['DD', 'dd']];
     _.each(conversions, function(conv) {
         dateFormat = dateFormat.replace(conv[0], conv[1]);
     });
 
     // If 'H' is contained in timeFormat display '10:00'
-    // Else display '10 AM'. 
+    // Else display '10 AM'.
     // See : http://fullcalendar.io/docs1/utilities/formatDate/
     var hourFormat = function(timeFormat){
         if (/H/.test(timeFormat))
@@ -137,7 +137,7 @@ var CalendarView = View.extend({
 
         //if quick_add = False, we don't allow quick_add
         //if quick_add = not specified in view, we use the default quick_create_instance
-        //if quick_add = is NOT False and IS specified in view, we this one for quick_create_instance'   
+        //if quick_add = is NOT False and IS specified in view, we this one for quick_create_instance'
 
         this.quick_add_pop = (isNullOrUndef(attrs.quick_add) || utils.toBoolElse(attrs.quick_add, true));
         // The display format which will be used to display the event where fields are between "[" and "]"
@@ -167,18 +167,18 @@ var CalendarView = View.extend({
 
         /*
                 Will be more logic to do it in futur, but see below to stay Retro-compatible
-                
+
                 if (isNull(attrs.avatar_model)) {
-                    this.avatar_model = 'res.partner'; 
+                    this.avatar_model = 'res.partner';
                 }
                 else {
                     if (attrs.avatar_model == 'False') {
                         this.avatar_model = null;
                     }
-                    else {  
+                    else {
                         this.avatar_model = attrs.avatar_model;
                     }
-                }            
+                }
         */
         if (isNullOrUndef(attrs.avatar_model)) {
             this.avatar_model = null;
@@ -269,7 +269,7 @@ var CalendarView = View.extend({
         bindCalendarButton('.o_calendar_button_month', 'changeView', 'month');
 
         this.$buttons.find('.o_calendar_button_' + this.mode).addClass('active');
-        
+
         if ($node) {
             this.$buttons.appendTo($node);
         } else {
@@ -309,7 +309,7 @@ var CalendarView = View.extend({
                     self.$buttons.find('.o_calendar_button_' + mode).addClass('active');
                 }
 
-                var title = self.title + ' (' + ((mode === "week")? _t("Week ") : "") + view.title + ")"; 
+                var title = self.title + ' (' + ((mode === "week")? _t("Week ") : "") + view.title + ")";
                 self.set({'title': title});
 
                 self.$calendar.fullCalendar('option', 'height', Math.max(290, parseInt(self.$('.o_calendar_view').height())));
@@ -381,7 +381,7 @@ var CalendarView = View.extend({
             defs.push(this.sidebar.appendTo(this.$sidebar_container));
 
             this.$small_calendar = this.$(".o_calendar_mini");
-            this.$small_calendar.datepicker({ 
+            this.$small_calendar.datepicker({
                 onSelect: this.calendarMiniChanged(this),
                 dayNamesMin : translate.dayNamesShort,
                 monthNames: translate.monthNamesShort,
@@ -476,7 +476,7 @@ var CalendarView = View.extend({
         this.color_map[key] = index;
         return index;
     },
-    
+
 
     /**
      * In o2m case, records from dataset won't have names attached to their *2o values.
@@ -526,7 +526,7 @@ var CalendarView = View.extend({
         });
         return def;
     },
-    
+
     /**
      * Transform OpenERP event object to fullcalendar event object
      */
@@ -551,7 +551,7 @@ var CalendarView = View.extend({
         if (this.info_fields) {
             var temp_ret = {};
             res_computed_text = this.how_display_event;
-            
+
             _.each(this.info_fields, function (fieldname) {
                 var value = evt[fieldname];
                 if (_.contains(["many2one"], self.fields[fieldname].type)) {
@@ -585,7 +585,7 @@ var CalendarView = View.extend({
                 res_computed_text = res_computed_text.replace("["+fieldname+"]",temp_ret[fieldname]);
             });
 
-            
+
             if (res_computed_text.length) {
                 the_title = res_computed_text;
             }
@@ -598,10 +598,10 @@ var CalendarView = View.extend({
                 the_title = res_text.join(', ');
             }
             the_title = _.escape(the_title);
-            
-            
+
+
             var the_title_avatar = '';
-            
+
             if (! _.isUndefined(this.attendee_people)) {
                 var MAX_ATTENDEES = 3;
                 var attendee_showed = 0;
@@ -618,7 +618,7 @@ var CalendarView = View.extend({
                             }
                             else {
                                 if (!self.colorIsAttendee || the_attendee_people != temp_ret[self.color_field]) {
-                                        var tempColor = (self.all_filters[the_attendee_people] !== undefined) 
+                                        var tempColor = (self.all_filters[the_attendee_people] !== undefined)
                                                     ? self.all_filters[the_attendee_people].color
                                                     : (self.all_filters[-1] ? self.all_filters[-1].color : 1);
                                         the_title_avatar += '<i class="fa fa-user o_attendee_head o_underline_color_'+tempColor+'" title="' + _.escape(self.all_attendees[the_attendee_people]) + '" ></i>';
@@ -634,23 +634,30 @@ var CalendarView = View.extend({
                     the_title_avatar += '<span class="o_attendee_head" title="' + attendee_other.slice(0, -2) + '">+</span>';
                 }
             }
-
-            the_title_avatar += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/email.png"/>'
-            the_title_avatar += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/ring.png"/>'
-            the_title_avatar += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/reunion.png"/>'
-
         }
-        
+
         if (!date_stop && date_delay) {
             var m_start = moment(date_start).add(date_delay,'hours');
             date_stop = m_start.toDate();
         }
 
+        var the_title_avatar2 = the_title_avatar;
+        if (evt.next_activity_id[0] == 1){
+            the_title_avatar2 += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/email.png"/>';
+        }
+        else if (evt.next_activity_id[0] == 2){
+            the_title_avatar2 += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/ring.png"/>';
+        }
+        else if (evt.next_activity_id[0] == 4){
+            the_title_avatar2 += '<img title="Activity" class="o_attendee_head" src="/is_xxi_crm/static/src/img/reunion.png"/>';
+        }
+
+
         var r = {
             'start': moment(date_start).toString(),
             'end': moment(date_stop).toString(),
             'title': the_title,
-            'attendee_avatars': the_title_avatar,
+            'attendee_avatars': the_title_avatar2,
             'allDay': (this.fields[this.date_start].type == 'date' || (this.all_day && evt[this.all_day]) || false),
             'id': evt.id,
             'attendees':attendees
@@ -669,7 +676,7 @@ var CalendarView = View.extend({
         }
         return r;
     },
-    
+
     /**
      * Transform fullcalendar event object to OpenERP Data object
      */
@@ -681,10 +688,10 @@ var CalendarView = View.extend({
         // Normalize event_end without changing fullcalendars event.
         var data = {
             name: event.title
-        };            
-        
+        };
+
         var event_end = event.end;
-        //Bug when we move an all_day event from week or day view, we don't have a dateend or duration...            
+        //Bug when we move an all_day event from week or day view, we don't have a dateend or duration...
         if (event_end === null) {
             var m_date = moment(event.start).add(2, 'hours');
             event_end = m_date.toDate();
@@ -697,7 +704,7 @@ var CalendarView = View.extend({
             }
             if (this.all_day) {
                 date_start_day = new Date(Date.UTC(event.start.getFullYear(),event.start.getMonth(),event.start.getDate()));
-                date_stop_day = new Date(Date.UTC(event_end.getFullYear(),event_end.getMonth(),event_end.getDate()));                    
+                date_stop_day = new Date(Date.UTC(event_end.getFullYear(),event_end.getMonth(),event_end.getDate()));
             }
             else {
                 date_start_day = new Date(event.start.getFullYear(),event.start.getMonth(),event.start.getDate(),7);
@@ -708,7 +715,7 @@ var CalendarView = View.extend({
                 data[this.date_stop] = time.auto_date_to_str(date_stop_day, this.fields[this.date_stop].type);
             }
             diff_seconds = Math.round((date_stop_day.getTime() - date_start_day.getTime()) / 1000);
-                            
+
         }
         else {
             data[this.date_start] = time.auto_date_to_str(event.start, this.fields[this.date_start].type);
@@ -948,7 +955,7 @@ var CalendarView = View.extend({
         return false;
     },
 
-    do_show: function() {            
+    do_show: function() {
         this.do_push_state({});
         this.shown.resolve();
         return this._super();
