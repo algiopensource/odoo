@@ -1,24 +1,12 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from openerp.addons.web import http
-from openerp.addons.web.http import request
-from openerp.addons.website.controllers.main import Website
-from openerp.addons.website_portal.controllers.main import website_account
+from odoo.addons.website_sale.controllers.main import WebsiteSale
+from odoo.http import request
 
 
-class website_sale_stock(website_account):
-
-    @http.route([
-        '/my/orders/<int:order>',
-    ], type='http', auth='user', website=True)
-    def orders_followup(self, order=None, **post):
-        response = super(website_sale_stock, self).orders_followup(order=order, **post)
-
-        order = response.qcontext['order']
-        shipping_lines = request.env['stock.move'].sudo().search([('picking_id', 'in', order.picking_ids.ids)])
-        order_shipping_lines = {sl.product_id.id: sl.picking_id for sl in shipping_lines}
-
-        response.qcontext.update({
-            'order_shipping_lines': order_shipping_lines,
-        })
-        return response
+class WebsiteSale(WebsiteSale):
+    def _get_combination_info(self, product_template_id, product_id, combination, add_qty, pricelist, **kw):
+        """deprecated, use product method"""
+        combination = request.env['product.template.attribute.value'].browse(combination)
+        return request.env['product.template'].browse(int(product_template_id))._get_combination_info(combination, product_id, add_qty, pricelist)
